@@ -57,9 +57,9 @@ services:
       - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: your_database
-      MYSQL_USER: your_user
-      MYSQL_PASSWORD: your_password
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: hk_dev
+      MYSQL_PASSWORD: hkhkDev16!
     networks:
       - app-network
 
