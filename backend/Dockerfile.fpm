@@ -1,0 +1,35 @@
+FROM php:8.2-fpm
+
+# 시스템 패키지 설치
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    curl
+
+# PHP 익스텐션 설치
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Composer 설치
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# 작업 디렉토리 설정
+WORKDIR /var/www/html
+
+# 애플리케이션 코드 복사
+COPY . .
+
+# Composer 명령어 실행
+RUN composer install
+
+# 권한 설정
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# PHP-FPM 포그라운드 실행
+CMD ["php-fpm", "-F"]
